@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 210 40% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 40% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 40% 10%;
+
+    --primary: 205 85% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 145 60% 42%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 20% 95%;
+    --muted-foreground: 210 10% 45%;
+
+    --accent: 205 70% 92%;
+    --accent-foreground: 205 85% 30%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 20% 90%;
+    --input: 210 20% 90%;
+    --ring: 205 85% 45%;
+
+    --radius: 0.75rem;
+
+    --glass-bg: 0 0% 100% / 0.15;
+    --glass-border: 0 0% 100% / 0.2;
+    --glass-blur: 16px;
+
+    --gradient-primary: linear-gradient(135deg, hsl(205 85% 45%), hsl(195 90% 50%));
+    --gradient-hero: linear-gradient(135deg, hsl(205 85% 35% / 0.9), hsl(210 50% 15% / 0.85));
+    --gradient-green: linear-gradient(135deg, hsl(145 60% 42%), hsl(160 55% 48%));
+    --gradient-footer: linear-gradient(180deg, hsl(210 40% 12%), hsl(210 50% 8%));
+
+    --shadow-soft: 0 4px 30px hsl(205 85% 45% / 0.1);
+    --shadow-card: 0 8px 32px hsl(210 40% 10% / 0.08);
+    --shadow-glow: 0 0 40px hsl(205 85% 45% / 0.2);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg;
+  }
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-xl border border-white/40 shadow-card rounded-xl;
+  }
+  .glass-dark {
+    @apply bg-black/20 backdrop-blur-xl border border-white/10;
+  }
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  .gradient-green {
+    background: var(--gradient-green);
+  }
+  .gradient-footer {
+    background: var(--gradient-footer);
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+  .section-padding {
+    @apply py-20 md:py-28 px-4 md:px-8;
+  }
+  .container-custom {
+    @apply max-w-7xl mx-auto;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
