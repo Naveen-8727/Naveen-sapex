@@ -32,10 +32,10 @@ const Footer = () => (
           <h4 className="font-heading font-semibold text-white mb-4">Contact</h4>
           <div className="space-y-3 text-sm">
             <a href="tel:+919542668727" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Phone size={14} /> +91 9542668727
+              <Phone size={14} /> +91 9032078727
             </a>
-            <a href="mailto:info@sapexglobal.com" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Mail size={14} /> info@sapexglobal.com
+            <a className="flex items-center gap-2 hover:text-white transition-colors">
+              <Mail size={14} /> info[at]sapexglobal.com
             </a>
           </div>
         </div>
