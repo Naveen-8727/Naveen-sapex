@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
   // Create transporter using GoDaddy SMTP
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || "smtp.titan.email",
+    host: process.env.SMTP_HOST || "smtpout.secureserver.net",
     port: parseInt(process.env.SMTP_PORT || "465", 10),
     secure: true, // SSL on port 465
     auth: {
@@ -73,6 +73,8 @@ export default async function handler(req, res) {
   };
 
   try {
+    await transporter.verify();
+    console.log("SMTP VERIFIED"); //testing
     await transporter.sendMail(mailOptions);
     return res.status(200).json({ success: true, message: "Email sent successfully!" });
   } catch (error) {
