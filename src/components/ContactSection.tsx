@@ -1,12 +1,55 @@
 import { useState } from "react";
-import { Phone, Mail, MapPin, Send } from "lucide-react";
+import { Phone, Mail, MapPin, Send, Loader2, CheckCircle } from "lucide-react";
+import { toast } from "sonner";
 import AnimatedSection from "./AnimatedSection";
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", requirement: "", message: "" });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Basic validation
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      toast.error("Please fill in your name, email, and message.");
+      return;
+    }
+
+    // Simple email format check
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success("Message sent successfully! We'll get back to you soon.", {
+          icon: <CheckCircle className="text-green-500" size={18} />,
+        });
+        setForm({ name: "", email: "", phone: "", requirement: "", message: "" });
+      } else {
+        toast.error(data.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      toast.error("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section id="contact" className="section-padding bg-background">
@@ -25,7 +68,7 @@ const ContactSection = () => {
           {/* Info */}
           <AnimatedSection className="lg:col-span-2 space-y-6">
             {[
-              { icon: Phone, label: "+91 9542668727", href: "tel:+919542668727" },
+              { icon: Phone, label: "+91 9032078727", href: "tel:+919032078727" },
               { icon: Mail, label: "info@sapexglobal.com", href: "mailto:info@sapexglobal.com" },
               { icon: MapPin, label: "India" },
             ].map((c) => (
@@ -46,7 +89,7 @@ const ContactSection = () => {
 
           {/* Form */}
           <AnimatedSection delay={0.2} className="lg:col-span-3">
-            <form className="glass-card p-8 space-y-5" onSubmit={(e) => e.preventDefault()}>
+            <form className="glass-card p-8 space-y-5" onSubmit={handleSubmit}>
               <div className="grid sm:grid-cols-2 gap-5">
                 {(["name", "email", "phone", "requirement"] as const).map((field) => (
                   <input
@@ -55,6 +98,7 @@ const ContactSection = () => {
                     placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
                     value={form[field]}
                     onChange={handleChange}
+                    required={field === "name" || field === "email"}
                     className="w-full px-4 py-3 rounded-xl bg-muted/60 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300"
                   />
                 ))}
@@ -65,13 +109,23 @@ const ContactSection = () => {
                 rows={4}
                 value={form.message}
                 onChange={handleChange}
+                required
                 className="w-full px-4 py-3 rounded-xl bg-muted/60 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300 resize-none"
               />
               <button
                 type="submit"
-                className="gradient-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold flex items-center gap-2 hover:shadow-glow transition-all duration-300 hover:scale-105"
+                disabled={loading}
+                className="gradient-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold flex items-center gap-2 hover:shadow-glow transition-all duration-300 hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                Send Message <Send size={18} />
+                {loading ? (
+                  <>
+                    Sending... <Loader2 size={18} className="animate-spin" />
+                  </>
+                ) : (
+                  <>
+                    Send Message <Send size={18} />
+                  </>
+                )}
               </button>
             </form>
           </AnimatedSection>

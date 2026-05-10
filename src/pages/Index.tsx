@@ -4,7 +4,7 @@ import AboutSection from "@/components/AboutSection";
 import ServicesSection from "@/components/ServicesSection";
 import GlobalSection from "@/components/GlobalSection";
 import WhyChooseSection from "@/components/WhyChooseSection";
-// import ContactSection from "@/components/ContactSection";
+import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
@@ -16,6 +16,7 @@ const Index = () => (
     <ServicesSection />
     <GlobalSection />
     <WhyChooseSection />
+    <ContactSection/>
     <Footer />
     <WhatsAppButton />
   </>
