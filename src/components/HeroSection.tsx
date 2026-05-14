@@ -54,13 +54,13 @@ const HeroSection = () => {
           className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
         >
           <a
-            href="#footer"
+            href="#contact"
             className="gradient-primary text-primary-foreground px-8 py-4 rounded-xl font-semibold text-base flex items-center justify-center gap-2 hover:shadow-glow transition-all duration-300 hover:scale-105"
           >
             Get in Touch <ArrowRight size={18} />
           </a>
           <a
-            href="#footer"
+            href="#contact"
             className="glass border border-white/30 text-primary-foreground px-8 py-4 rounded-xl font-semibold text-base flex items-center justify-center gap-2 hover:bg-white/20 transition-all duration-300"
           >
             <FileText size={18} /> Request a Quote

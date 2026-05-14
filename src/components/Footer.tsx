@@ -17,7 +17,7 @@ const Footer = () => (
         <div>
           <h4 className="font-heading font-semibold text-white mb-4">Quick Links</h4>
           <ul className="space-y-2 text-sm">
-            {["About", "What We Do", "Global", ].map((l) => (
+            {["About", "What We Do", "Global", "Contact"].map((l) => (
               <li key={l}>
                 <a href={l === "Certificates" ? "/certificates" : `/#${l.toLowerCase().replace(/ /g, "")}`} className="hover:text-white transition-colors">
                   {l}

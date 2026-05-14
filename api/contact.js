@@ -74,7 +74,7 @@ export default async function handler(req, res) {
 
   try {
     await transporter.verify();
-    console.log("SMTP VERIFIED"); //testing
+    // console.log("SMTP VERIFIED"); //testing
     await transporter.sendMail(mailOptions);
     return res.status(200).json({ success: true, message: "Email sent successfully!" });
   } catch (error) {

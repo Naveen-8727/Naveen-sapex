@@ -1,39 +1,61 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/SapexLogo.jpeg";
 
 const navItems = [
-  { label: "Home", href: "/#home" },
-  { label: "About", href: "/#about" },
-  { label: "What We Do", href: "/#services" },
-  { label: "Global", href: "/#global" },
-  { label: "Contact", href: "/#footer" },
-  // { label: "Certificates", href: "/certificates" },
+  { label: "Home", href: "home" },
+  { label: "About", href: "about" },
+  { label: "What We Do", href: "services" },
+  { label: "Global", href: "global" },
+  { label: "Contact", href: "contact" },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
+
     window.addEventListener("scroll", onScroll);
+
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleClick = (href: string) => {
-    setOpen(false);
-    if (href.startsWith("/#")) {
-      const id = href.slice(2);
-      if (location.pathname !== "/") {
-        window.location.href = href;
-        return;
-      }
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
+  };
+
+  const handleNavigation = (id: string) => {
+    setOpen(false);
+
+    // If already on homepage
+    if (location.pathname === "/") {
+      setTimeout(() => {
+        scrollToSection(id);
+      }, 100);
+
+      return;
+    }
+
+    // Navigate to homepage first
+    navigate("/");
+
+    setTimeout(() => {
+      scrollToSection(id);
+    }, 300);
   };
 
   return (
@@ -47,51 +69,42 @@ const Navbar = () => {
       }`}
     >
       <div className="container-custom flex items-center justify-between h-16 md:h-20 px-4 md:px-8">
+        {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="Sapex Logo" className="h-10 md:h-16 w-auto rounded-md" />
+          <img
+            src={logo}
+            alt="Sapex Logo"
+            className="h-10 md:h-16 w-auto rounded-md"
+          />
         </Link>
 
-        {/* Desktop */}
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) =>
-            item.href === "/certificates" ? (
-              <Link
-                key={item.label}
-                to="/certificates"
-                className={`text-sm font-medium transition-colors duration-300 hover:text-primary ${
-                  scrolled ? "text-foreground" : "text-white"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleClick(item.href);
-                }}
-                className={`text-sm font-medium transition-colors duration-300 hover:text-primary ${
-                  scrolled ? "text-foreground" : "text-white"
-                }`}
-              >
-                {item.label}
-              </a>
-            )
-          )}
+          {navItems.map((item) => (
+            <button
+              key={item.label}
+              onClick={() => handleNavigation(item.href)}
+              className={`text-sm font-medium transition-colors duration-300 hover:text-primary ${
+                scrolled ? "text-foreground" : "text-white"
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
 
-        {/* Mobile toggle */}
+        {/* Mobile Toggle */}
         <button
           onClick={() => setOpen(!open)}
-          className={`md:hidden p-2 rounded-lg ${scrolled ? "text-foreground" : "text-white"}`}
+          className={`md:hidden p-2 rounded-lg ${
+            scrolled ? "text-foreground" : "text-white"
+          }`}
         >
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -101,30 +114,15 @@ const Navbar = () => {
             className="md:hidden bg-white/90 backdrop-blur-xl border-b border-white/30"
           >
             <div className="flex flex-col p-4 gap-4">
-              {navItems.map((item) =>
-                item.href === "/certificates" ? (
-                  <Link
-                    key={item.label}
-                    to="/certificates"
-                    onClick={() => setOpen(false)}
-                    className="text-sm font-medium text-foreground hover:text-primary transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                ) : (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleClick(item.href);
-                    }}
-                    className="text-sm font-medium text-foreground hover:text-primary transition-colors"
-                  >
-                    {item.label}
-                  </a>
-                )
-              )}
+              {navItems.map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => handleNavigation(item.href)}
+                  className="text-left text-sm font-medium text-foreground hover:text-primary transition-colors"
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
           </motion.div>
         )}

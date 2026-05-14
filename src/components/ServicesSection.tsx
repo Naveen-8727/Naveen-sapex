@@ -9,7 +9,7 @@ const services = [
 ];
 
 const ServicesSection = () => (
-  <section id="services" className="section-padding bg-muted/50">
+  <section id="services" className="section-padding bg-blue-50">
     <div className="container-custom">
       <AnimatedSection className="text-center mb-16">
         <p className="text-primary font-semibold text-sm tracking-widest uppercase mb-3">Our Services</p>
